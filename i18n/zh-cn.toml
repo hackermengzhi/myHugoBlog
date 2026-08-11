@@ -1,0 +1,71 @@
+[[translation]]
+id = "Home"
+translation = "首页"
+
+[[translation]]
+id = "ReadMore"
+translation = "阅读更多"
+
+[[translation]]
+id = "Categories"
+translation = "分类"
+
+[[translation]]
+id = "Tags"
+translation = "标签"
+
+[[translation]]
+id = "Search"
+translation = "搜索"
+
+[[translation]]
+id = "SearchPlaceholder"
+translation = "搜索文章、标签或关键字..."
+
+[[translation]]
+id = "Archives"
+translation = "归档"
+
+[[translation]]
+id = "RecentPosts"
+translation = "最近文章"
+
+[[translation]]
+id = "NoResults"
+translation = "未找到相关结果"
+
+[[translation]]
+id = "SearchResults"
+translation = "搜索结果"
+
+[[translation]]
+id = "By"
+translation = "由"
+
+[[translation]]
+id = "Author"
+translation = "作者"
+
+[[translation]]
+id = "Published"
+translation = "发布于"
+
+[[translation]]
+id = "Updated"
+translation = "更新于"
+
+[[translation]]
+id = "Next"
+translation = "下一篇"
+
+[[translation]]
+id = "Previous"
+translation = "上一篇"
+
+[[translation]]
+id = "TableOfContents"
+translation = "目录"
+
+[[translation]]
+id = "Page"
+translation = "页面"
