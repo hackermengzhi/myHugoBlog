@@ -1,71 +1,53 @@
-[[translation]]
-id = "Home"
-translation = "首页"
+[Home]
+other = "首页"
 
-[[translation]]
-id = "ReadMore"
-translation = "阅读更多"
+[ReadMore]
+other = "阅读更多"
 
-[[translation]]
-id = "Categories"
-translation = "分类"
+[Categories]
+other = "分类"
 
-[[translation]]
-id = "Tags"
-translation = "标签"
+[Tags]
+other = "标签"
 
-[[translation]]
-id = "Search"
-translation = "搜索"
+[Search]
+other = "搜索"
 
-[[translation]]
-id = "SearchPlaceholder"
-translation = "搜索文章、标签或关键字..."
+[SearchPlaceholder]
+other = "搜索文章、标签或关键字..."
 
-[[translation]]
-id = "Archives"
-translation = "归档"
+[Archives]
+other = "归档"
 
-[[translation]]
-id = "RecentPosts"
-translation = "最近文章"
+[RecentPosts]
+other = "最近文章"
 
-[[translation]]
-id = "NoResults"
-translation = "未找到相关结果"
+[NoResults]
+other = "未找到相关结果"
 
-[[translation]]
-id = "SearchResults"
-translation = "搜索结果"
+[SearchResults]
+other = "搜索结果"
 
-[[translation]]
-id = "By"
-translation = "由"
+[By]
+other = "由"
 
-[[translation]]
-id = "Author"
-translation = "作者"
+[Author]
+other = "作者"
 
-[[translation]]
-id = "Published"
-translation = "发布于"
+[Published]
+other = "发布于"
 
-[[translation]]
-id = "Updated"
-translation = "更新于"
+[Updated]
+other = "更新于"
 
-[[translation]]
-id = "Next"
-translation = "下一篇"
+[Next]
+other = "下一篇"
 
-[[translation]]
-id = "Previous"
-translation = "上一篇"
+[Previous]
+other = "上一篇"
 
-[[translation]]
-id = "TableOfContents"
-translation = "目录"
+[TableOfContents]
+other = "目录"
 
-[[translation]]
-id = "Page"
-translation = "页面"
+[Page]
+other = "页面"
