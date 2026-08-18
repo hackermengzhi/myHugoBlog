@@ -241,4 +241,36 @@
             loadTrack(index);
         })();
     </script>
+
+    <script>
+        (() => {
+            const tocLinks = document.querySelectorAll('.article-page .toc-nav a[href^="#"]');
+            const article = document.querySelector('.article-page .main-article');
+            if (!tocLinks.length || !article) return;
+
+            const scrollToHeading = (id, behavior = 'smooth') => {
+                const target = document.getElementById(id);
+                if (!target) return false;
+                const articleRect = article.getBoundingClientRect();
+                const targetRect = target.getBoundingClientRect();
+                const top = article.scrollTop + targetRect.top - articleRect.top - 24;
+                article.scrollTo({ top: Math.max(0, top), behavior });
+                return true;
+            };
+
+            tocLinks.forEach((link) => {
+                link.addEventListener('click', (event) => {
+                    const id = decodeURIComponent(link.hash.slice(1));
+                    if (!scrollToHeading(id)) return;
+                    event.preventDefault();
+                    history.replaceState(null, '', `#${encodeURIComponent(id)}`);
+                });
+            });
+
+            if (window.location.hash) {
+                const id = decodeURIComponent(window.location.hash.slice(1));
+                window.requestAnimationFrame(() => scrollToHeading(id, 'auto'));
+            }
+        })();
+    </script>
 {{- end -}}
