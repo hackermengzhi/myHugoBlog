@@ -1,0 +1,29 @@
+{{ define "main" }}
+    {{- $posts := where .Site.RegularPages "Type" "in" .Site.Params.mainSections -}}
+    {{- $paginator := partial "helper/paginator.html" . -}}
+
+    {{ if eq (len $posts) 0 }}
+        <section class="blog-empty" aria-labelledby="blog-empty-title">
+            <span class="blog-empty__mark" aria-hidden="true">✦</span>
+            <p class="blog-empty__eyebrow">A NEW BEGINNING</p>
+            <h1 id="blog-empty-title">新的故事，从这里开始。</h1>
+            <p>博客正在准备中，第一篇文章很快就会出现在这里。</p>
+        </section>
+    {{ else }}
+        <section class="article-list">
+            {{ range $paginator.Pages }}
+                {{ partial "article-list/default" . }}
+            {{ end }}
+        </section>
+        {{- partial "pagination.html" . -}}
+    {{ end }}
+
+    {{- partial "footer/footer" . -}}
+{{ end }}
+
+{{ define "right-sidebar" }}
+    {{- $posts := where .Site.RegularPages "Type" "in" .Site.Params.mainSections -}}
+    {{ if gt (len $posts) 0 }}
+        {{ partial "sidebar/right.html" (dict "Context" . "Scope" "homepage") }}
+    {{ end }}
+{{ end }}

@@ -1,0 +1,84 @@
+{{ define "body-class" }}pictures-page{{ end }}
+
+{{ define "main" }}
+    <article class="main-article photo-page">
+        <header class="article-header photo-page__header">
+            <div class="article-details">
+                <h1 class="article-title">{{ .Title }}</h1>
+                {{ with .Description }}<p class="article-subtitle">{{ . }}</p>{{ end }}
+                <div class="article-time">
+                    <span class="photo-count">{{ len .Params.pictures }} 张图片</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="article-content photo-gallery-content">
+            <div class="photo-masonry" data-picture-gallery>
+                {{ range $index, $item := .Params.pictures }}
+                    {{ $image := $.Resources.Get $item.src }}
+                    {{ with $image }}
+                        {{ $large := .Resize "1400x webp q88" }}
+                        {{ $preview := .Resize "720x webp q84" }}
+                        {{ $small := .Resize "420x webp q82" }}
+                        <figure class="photo-tile">
+                            <button
+                                type="button"
+                                data-full="{{ $large.RelPermalink }}"
+                                data-caption="{{ default "" $item.caption }}"
+                                aria-label="查看大图：{{ default (printf "图片 %d" (add $index 1)) $item.alt }}"
+                            >
+                                <img
+                                    src="{{ $preview.RelPermalink }}"
+                                    srcset="{{ $small.RelPermalink }} 420w, {{ $preview.RelPermalink }} 720w"
+                                    sizes="(max-width: 600px) calc(100vw - 62px), (max-width: 1023px) 45vw, 31vw"
+                                    width="{{ $preview.Width }}"
+                                    height="{{ $preview.Height }}"
+                                    alt="{{ default "" $item.alt }}"
+                                    loading="lazy"
+                                >
+                                {{ with $item.caption }}<figcaption>{{ . }}</figcaption>{{ end }}
+                            </button>
+                        </figure>
+                    {{ end }}
+                {{ end }}
+            </div>
+        </section>
+    </article>
+
+    <dialog class="picture-lightbox" data-picture-lightbox aria-label="图片预览">
+        <button class="picture-lightbox__close" type="button" data-lightbox-close aria-label="关闭图片预览">×</button>
+        <figure>
+            <img src="" alt="">
+            <figcaption></figcaption>
+        </figure>
+    </dialog>
+
+    <script>
+        (() => {
+            const gallery = document.querySelector('[data-picture-gallery]');
+            const lightbox = document.querySelector('[data-picture-lightbox]');
+            if (!gallery || !lightbox) return;
+
+            const image = lightbox.querySelector('img');
+            const caption = lightbox.querySelector('figcaption');
+
+            gallery.addEventListener('click', (event) => {
+                const button = event.target.closest('.photo-tile button');
+                if (!button) return;
+                image.src = button.dataset.full;
+                image.alt = button.querySelector('img').alt;
+                caption.textContent = button.dataset.caption;
+                caption.hidden = !button.dataset.caption;
+                lightbox.showModal();
+            });
+
+            lightbox.querySelector('[data-lightbox-close]').addEventListener('click', () => lightbox.close());
+            lightbox.addEventListener('click', (event) => {
+                if (event.target === lightbox) lightbox.close();
+            });
+            lightbox.addEventListener('close', () => { image.src = ''; });
+        })();
+    </script>
+
+    {{ partialCached "footer/footer" . }}
+{{ end }}

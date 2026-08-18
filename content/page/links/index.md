@@ -1,5 +1,6 @@
 ---
-title: Links
+title: 链接 | Links
+slug: links
 links:
   - title: GitHub
     description: GitHub is the world's largest software development platform.
@@ -7,6 +8,7 @@ links:
     image: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
 menu:
     main: 
+        name: 链接 | Links
         weight: 4
         params:
             icon: link

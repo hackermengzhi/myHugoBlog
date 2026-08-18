@@ -10,7 +10,7 @@ favicon        = "img/favicon.png"
 SortBy              = "default"
 
 [footer]
-    since      = 2020
+    since      = 2026
     customText = ""
 
 [dateFormat]
@@ -18,9 +18,13 @@ SortBy              = "default"
     lastUpdated = ":date_full"
 
 [sidebar]
-    emoji    = "🍥"
-    subtitle = "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-    avatar   = "img/avatar.png"
+    emoji    = "✨"
+    subtitle = "记录学习、生活与灵感。"
+    avatar   = "img/avatar.jpg"
+
+[musicPlayer]
+    enabled = true
+    # Complete official-source playlist: data/music.json
 
 [article]
     headingAnchor = false
