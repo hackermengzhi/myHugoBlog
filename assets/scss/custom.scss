@@ -564,6 +564,38 @@ body {
     padding-bottom: 1rem;
 }
 
+@media (min-width: 768px) {
+    /* Keep the page and its background still while long articles scroll in-card. */
+    body.article-page {
+        overflow: hidden;
+        background-attachment: fixed;
+    }
+
+    .article-page .main-article:not(.photo-page) {
+        max-height: calc(100vh - 60px);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        scrollbar-color: rgba(148, 163, 184, 0.58) transparent;
+        scrollbar-gutter: stable;
+        scrollbar-width: thin;
+    }
+
+    .article-page .main-article:not(.photo-page)::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .article-page .main-article:not(.photo-page)::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .article-page .main-article:not(.photo-page)::-webkit-scrollbar-thumb {
+        border: 2px solid transparent;
+        border-radius: 999px;
+        background-clip: padding-box;
+        background-color: rgba(148, 163, 184, 0.58);
+    }
+}
+
 .article-page .main-article:not(.photo-page) .article-header,
 .article-page .main-article:not(.photo-page) .article-content,
 .article-page .main-article:not(.photo-page) .article-footer {
