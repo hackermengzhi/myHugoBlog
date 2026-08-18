@@ -1,21 +1,81 @@
 {{ define "main" }}
     {{- $posts := where .Site.RegularPages "Type" "in" .Site.Params.mainSections -}}
-    {{- $paginator := partial "helper/paginator.html" . -}}
+    {{- $musicTracks := hugo.Data.music.tracks -}}
 
-    {{ if eq (len $posts) 0 }}
-        <section class="blog-empty" aria-labelledby="blog-empty-title">
-            <span class="blog-empty__mark" aria-hidden="true">✦</span>
-            <p class="blog-empty__eyebrow">A NEW BEGINNING</p>
-            <h1 id="blog-empty-title">新的故事，从这里开始。</h1>
-            <p>博客正在准备中，第一篇文章很快就会出现在这里。</p>
+    <section class="home-hero" aria-labelledby="home-hero-title">
+        <div class="home-hero__content">
+            <p class="home-hero__kicker">PERSONAL SPACE · 2026</p>
+            <h1 id="home-hero-title">你好，我是 <em>Mengzhi</em>。</h1>
+            <p class="home-hero__lead">
+                这里记录学习、生活与灵感。愿每一次认真整理，都能让喜欢的事物留下清晰的回声。
+            </p>
+            <div class="home-hero__actions">
+                <a href="{{ "pictures/" | relURL }}">看看图库 <span aria-hidden="true">→</span></a>
+                <a href="{{ "archives/" | relURL }}">浏览文章</a>
+            </div>
+        </div>
+
+        <aside class="home-hero__aside" aria-label="站点状态">
+            <div class="home-hero__note">
+                <p class="home-hero__note-label">Now collecting</p>
+                <p class="home-hero__note-title">把日子过成作品。</p>
+                <p class="home-hero__note-copy">慢慢更新，也认真生活。欢迎从任意一个入口开始逛逛。</p>
+                <div class="home-hero__stats">
+                    <div>
+                        <strong>{{ len $musicTracks }}</strong>
+                        <span>首音乐</span>
+                    </div>
+                    <div>
+                        <strong>04</strong>
+                        <span>张照片</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </section>
+
+    <section aria-labelledby="home-links-title">
+        <div class="home-section-heading">
+            <h2 id="home-links-title">从这里开始</h2>
+            <p>Choose a little corner</p>
+        </div>
+        <div class="home-link-grid">
+            <a class="home-link-card" href="{{ "pictures/" | relURL }}">
+                <span class="home-link-card__icon" aria-hidden="true">✦</span>
+                <strong>图库 Photos</strong>
+                <span>收藏喜欢的光影与片刻</span>
+            </a>
+            <a class="home-link-card" href="{{ "archives/" | relURL }}">
+                <span class="home-link-card__icon" aria-hidden="true">↗</span>
+                <strong>文章 Archives</strong>
+                <span>{{ len $posts }} 篇记录，慢慢写给未来</span>
+            </a>
+            <a class="home-link-card" href="{{ "links/" | relURL }}">
+                <span class="home-link-card__icon" aria-hidden="true">⌁</span>
+                <strong>链接 Links</strong>
+                <span>一些值得反复打开的地方</span>
+            </a>
+        </div>
+    </section>
+
+    {{ if gt (len $posts) 0 }}
+        <section class="home-posts" aria-labelledby="home-posts-title">
+            <div class="home-section-heading">
+                <h2 id="home-posts-title">最近更新</h2>
+                <p>Latest notes</p>
+            </div>
+            <section class="article-list">
+                {{- $paginator := partial "helper/paginator.html" . -}}
+                {{ range $paginator.Pages }}
+                    {{ partial "article-list/default" . }}
+                {{ end }}
+            </section>
+            {{- partial "pagination.html" . -}}
         </section>
     {{ else }}
-        <section class="article-list">
-            {{ range $paginator.Pages }}
-                {{ partial "article-list/default" . }}
-            {{ end }}
+        <section class="home-note" aria-label="更新提示">
+            <p><strong>第一篇文章正在路上。</strong> 先去听一首歌，或者在图库里留下一点今天的光。</p>
         </section>
-        {{- partial "pagination.html" . -}}
     {{ end }}
 
     {{- partial "footer/footer" . -}}
