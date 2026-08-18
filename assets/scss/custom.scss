@@ -70,8 +70,11 @@ body {
 
 .left-sidebar .menu li a {
     position: relative;
+    width: 100%;
+    min-height: 58px;
+    padding: 0.85rem 1.15rem;
     border: 1px solid transparent;
-    border-radius: 14px;
+    border-radius: 18px;
     transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease,
         box-shadow 0.2s ease, transform 0.2s ease;
 }
@@ -83,10 +86,11 @@ body {
 }
 
 .left-sidebar .menu li.current > a {
-    border-color: rgba(233, 101, 151, 0.22);
+    border-width: 2px;
+    border-color: rgba(233, 101, 151, 0.28);
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.82), rgba(255, 237, 244, 0.7));
     color: var(--accent-color);
-    box-shadow: 0 8px 18px rgba(233, 101, 151, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.42);
+    box-shadow: 0 10px 24px rgba(233, 101, 151, 0.14), inset 0 0 0 1px rgba(255, 255, 255, 0.42);
     transform: none;
 }
 
