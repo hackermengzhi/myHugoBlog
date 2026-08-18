@@ -244,9 +244,9 @@
 
     <script>
         (() => {
-            const tocLinks = document.querySelectorAll('.article-page .toc-nav a[href^="#"]');
             const article = document.querySelector('.article-page .main-article');
-            if (!tocLinks.length || !article) return;
+            const toc = document.querySelector('.article-page .toc-nav');
+            if (!toc || !article) return;
 
             const scrollToHeading = (id, behavior = 'smooth') => {
                 const target = document.getElementById(id);
@@ -254,17 +254,23 @@
                 const articleRect = article.getBoundingClientRect();
                 const targetRect = target.getBoundingClientRect();
                 const top = article.scrollTop + targetRect.top - articleRect.top - 24;
-                article.scrollTo({ top: Math.max(0, top), behavior });
+                const nextTop = Math.max(0, top);
+                article.scrollTop = nextTop;
+                if (behavior === 'smooth') {
+                    article.scrollTo({ top: nextTop, behavior });
+                }
                 return true;
             };
 
-            tocLinks.forEach((link) => {
-                link.addEventListener('click', (event) => {
-                    const id = decodeURIComponent(link.hash.slice(1));
-                    if (!scrollToHeading(id)) return;
-                    event.preventDefault();
-                    history.replaceState(null, '', `#${encodeURIComponent(id)}`);
-                });
+            toc.addEventListener('click', (event) => {
+                const link = event.target.closest('a[href^="#"]');
+                if (!link || !toc.contains(link)) return;
+                const rawId = link.getAttribute('href').slice(1);
+                const id = decodeURIComponent(rawId);
+                if (!document.getElementById(id)) return;
+                event.preventDefault();
+                scrollToHeading(id);
+                history.replaceState(null, '', `#${encodeURIComponent(id)}`);
             });
 
             if (window.location.hash) {
