@@ -583,6 +583,44 @@ body {
     border-radius: 12px;
 }
 
+/* Keep article blocks inside the reading column instead of bleeding to the card edge. */
+.article-page .article-content h1,
+.article-page .article-content h2,
+.article-page .article-content h3,
+.article-page .article-content h4,
+.article-page .article-content h5,
+.article-page .article-content h6,
+.article-page .article-content blockquote,
+.article-page .article-content pre,
+.article-page .article-content .highlight,
+.article-page .article-content figure,
+.article-page .article-content .gallery,
+.article-page .article-content .table-wrapper,
+.article-page .article-content .video-wrapper,
+.article-page .article-content .s_video_simple {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.article-page .article-content h1,
+.article-page .article-content h2,
+.article-page .article-content h3,
+.article-page .article-content h4,
+.article-page .article-content h5,
+.article-page .article-content h6 {
+    padding-left: 1rem;
+    border-left-width: 3px;
+}
+
+.article-page .article-content blockquote,
+.article-page .article-content pre,
+.article-page .article-content .highlight,
+.article-page .article-content .table-wrapper,
+.article-page .article-content .video-wrapper {
+    border-radius: 14px;
+}
+
 .widget--toc {
     border: 0;
     border-radius: 18px;
