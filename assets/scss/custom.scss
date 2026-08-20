@@ -43,6 +43,12 @@ body {
     padding-top: 0;
 }
 
+/* The mobile menu still needs vertical scrolling, but never horizontal scrolling. */
+.left-sidebar .menu {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 .main.full-width {
     display: flex;
     padding: 0;
