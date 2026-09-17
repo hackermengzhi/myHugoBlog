@@ -1,35 +1,28 @@
 ---
 title: 链接 | Links
 slug: links
+description: 常用主页与值得反复访问的站点。
 links:
-  - title: GitHub
-    description: GitHub is the world's largest software development platform.
-    website: https://github.com
-    image: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
+  - title: Mengzhi on GitHub
+    description: 代码、项目与持续更新的学习实践。
+    website: https://github.com/hackermengzhi
+  - title: Mengzhi on Codeforces
+    description: 算法训练与竞赛记录。
+    website: https://codeforces.com/profile/hackermengzhi
+  - title: Hugo
+    description: 这个博客使用的静态网站生成器。
+    website: https://gohugo.io/
+  - title: Hugo Theme Stack
+    description: 本站使用的简洁卡片式 Hugo 主题。
+    website: https://github.com/CaiJimmy/hugo-theme-stack
 menu:
     main: 
         name: 链接 | Links
-        weight: 4
+        weight: 30
         params:
             icon: link
 
 comments: false
 ---
 
-To use this feature, add `links` section to frontmatter.
-
-This page's frontmatter:
-
-```yaml
-links:
-  - title: GitHub
-    description: GitHub is the world's largest software development platform.
-    website: https://github.com
-    image: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
-  - title: TypeScript
-    description: TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.
-    website: https://www.typescriptlang.org
-    image: ts-logo-128.jpg
-```
-
-`image` field accepts both local and external images.
+这里收集我的公开主页，以及搭建和维护本站时常用的工具。

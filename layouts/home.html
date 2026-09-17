@@ -1,37 +1,56 @@
 {{ define "main" }}
     {{- $posts := where .Site.RegularPages "Type" "in" .Site.Params.mainSections -}}
     {{- $musicTracks := hugo.Data.music.tracks -}}
+    {{- $picturePage := .Site.GetPage "page/pictures" -}}
+    {{- $pictureCount := 0 -}}
+    {{- $heroImage := false -}}
+    {{- with $picturePage -}}
+        {{- $pictureCount = len .Params.pictures -}}
+        {{- $heroImage = .Resources.Get "mountain.jpg" -}}
+    {{- end -}}
 
     <section class="home-hero" aria-labelledby="home-hero-title">
         <div class="home-hero__content">
-            <p class="home-hero__kicker">PERSONAL SPACE · 2026</p>
+            <p class="home-hero__kicker">LEARN · BUILD · RECORD</p>
             <h1 id="home-hero-title">你好，我是 <em>Mengzhi</em>。</h1>
             <p class="home-hero__lead">
-                这里记录学习、生活与灵感。愿每一次认真整理，都能让喜欢的事物留下清晰的回声。
+                我在这里记录机器学习、编程实践和生活片段。把正在理解的事写清楚，也把值得记住的瞬间留下来。
             </p>
             <div class="home-hero__actions">
-                <a href="{{ "pictures/" | relURL }}">看看图库 <span aria-hidden="true">→</span></a>
-                <a href="{{ "archives/" | relURL }}">浏览文章</a>
+                <a href="{{ "archives/" | relURL }}">浏览文章 <span aria-hidden="true">→</span></a>
+                <a href="{{ "pictures/" | relURL }}">看看图库</a>
             </div>
+            <dl class="home-hero__stats" aria-label="站点内容统计">
+                <div>
+                    <dt>{{ len $posts }}</dt>
+                    <dd>篇文章</dd>
+                </div>
+                <div>
+                    <dt>{{ $pictureCount }}</dt>
+                    <dd>张照片</dd>
+                </div>
+                <div>
+                    <dt>{{ len $musicTracks }}</dt>
+                    <dd>首音乐</dd>
+                </div>
+            </dl>
         </div>
 
-        <aside class="home-hero__aside" aria-label="站点状态">
-            <div class="home-hero__note">
-                <p class="home-hero__note-label">Now collecting</p>
-                <p class="home-hero__note-title">把日子过成作品。</p>
-                <p class="home-hero__note-copy">慢慢更新，也认真生活。欢迎从任意一个入口开始逛逛。</p>
-                <div class="home-hero__stats">
-                    <div>
-                        <strong>{{ len $musicTracks }}</strong>
-                        <span>首音乐</span>
-                    </div>
-                    <div>
-                        <strong>04</strong>
-                        <span>张照片</span>
-                    </div>
-                </div>
-            </div>
-        </aside>
+        {{ with $heroImage }}
+            {{- $heroLarge := .Fill "900x1080 webp q86" -}}
+            {{- $heroSmall := .Fill "520x620 webp q82" -}}
+            <figure class="home-hero__visual">
+                <img
+                    src="{{ $heroLarge.RelPermalink }}"
+                    srcset="{{ $heroSmall.RelPermalink }} 520w, {{ $heroLarge.RelPermalink }} 900w"
+                    sizes="(max-width: 767px) calc(100vw - 32px), 34vw"
+                    width="{{ $heroLarge.Width }}"
+                    height="{{ $heroLarge.Height }}"
+                    alt="蓝粉色流体纹理抽象画"
+                >
+                <figcaption>Blue flow · 影像收藏</figcaption>
+            </figure>
+        {{ end }}
     </section>
 
     <section aria-labelledby="home-links-title">
@@ -41,17 +60,17 @@
         </div>
         <div class="home-link-grid">
             <a class="home-link-card" href="{{ "pictures/" | relURL }}">
-                <span class="home-link-card__icon" aria-hidden="true">✦</span>
+                <span class="home-link-card__icon" aria-hidden="true">{{ partial "helper/icon" "photo" }}</span>
                 <strong>图库 Photos</strong>
                 <span>收藏喜欢的光影与片刻</span>
             </a>
             <a class="home-link-card" href="{{ "archives/" | relURL }}">
-                <span class="home-link-card__icon" aria-hidden="true">↗</span>
+                <span class="home-link-card__icon" aria-hidden="true">{{ partial "helper/icon" "archives" }}</span>
                 <strong>文章 Archives</strong>
                 <span>{{ len $posts }} 篇记录，慢慢写给未来</span>
             </a>
             <a class="home-link-card" href="{{ "links/" | relURL }}">
-                <span class="home-link-card__icon" aria-hidden="true">⌁</span>
+                <span class="home-link-card__icon" aria-hidden="true">{{ partial "helper/icon" "link" }}</span>
                 <strong>链接 Links</strong>
                 <span>一些值得反复打开的地方</span>
             </a>

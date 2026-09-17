@@ -16,7 +16,7 @@
                         <strong data-player-title></strong>
                         <a data-player-artist href="#" target="_blank" rel="noopener noreferrer"></a>
                     </div>
-                    <button class="music-player__list-toggle" type="button" data-player-list-toggle aria-label="打开播放列表" title="播放列表">
+                    <button class="music-player__list-toggle" type="button" data-player-list-toggle aria-label="打开播放列表" aria-expanded="false" title="播放列表">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h12M4 12h12M4 18h8"/><path d="m18 15 3 2-3 2z"/></svg>
                     </button>
                 </div>
@@ -92,6 +92,7 @@
             const iframe = player.querySelector('[data-player-iframe]');
             const list = player.querySelector('[data-player-list]');
             const trackList = player.querySelector('[data-player-tracks]');
+            const listToggle = player.querySelector('[data-player-list-toggle]');
             let index = Number(localStorage.getItem('MengzhiMusicTrack') || 0) % tracks.length;
             let providerTimer = 0;
             let providerStartedAt = 0;
@@ -120,9 +121,13 @@
                 tracks.forEach((track, trackIndex) => {
                     const item = document.createElement('li');
                     const button = document.createElement('button');
+                    const trackTitle = document.createElement('span');
+                    const trackArtist = document.createElement('small');
                     button.type = 'button';
                     button.dataset.index = String(trackIndex);
-                    button.innerHTML = `<span>${track.title}</span><small>${track.artist}</small>`;
+                    trackTitle.textContent = track.title;
+                    trackArtist.textContent = track.artist;
+                    button.append(trackTitle, trackArtist);
                     if (trackIndex === index) button.classList.add('is-current');
                     item.append(button);
                     trackList.append(item);
@@ -144,7 +149,7 @@
                 progress.value = 0;
                 current.textContent = '0:00';
                 duration.textContent = formatTime(track.duration || 0);
-                progress.disabled = false;
+                progress.disabled = !!track.bvid;
                 progress.setAttribute('aria-disabled', String(!!track.bvid));
                 localStorage.setItem('MengzhiMusicTrack', String(index));
                 renderList();
@@ -219,9 +224,11 @@
                 if (audio.duration) audio.currentTime = (Number(progress.value) / 100) * audio.duration;
             });
 
-            player.querySelector('[data-player-list-toggle]').addEventListener('click', () => {
+            listToggle.addEventListener('click', () => {
                 list.hidden = !list.hidden;
                 player.classList.toggle('has-open-list', !list.hidden);
+                listToggle.setAttribute('aria-expanded', String(!list.hidden));
+                listToggle.setAttribute('aria-label', list.hidden ? '打开播放列表' : '关闭播放列表');
                 centerCurrentTrack('auto');
             });
             trackList.addEventListener('click', (event) => {
@@ -232,12 +239,21 @@
                 stopProvider();
                 player.hidden = true;
                 launcher.hidden = false;
+                localStorage.setItem('MengzhiMusicCollapsed', 'true');
             });
             launcher.addEventListener('click', () => {
                 launcher.hidden = true;
                 player.hidden = false;
+                localStorage.setItem('MengzhiMusicCollapsed', 'false');
             });
 
+            const collapsePreference = localStorage.getItem('MengzhiMusicCollapsed');
+            const startsCollapsed = collapsePreference === 'true'
+                || (collapsePreference === null && window.matchMedia('(max-width: 767px)').matches);
+            if (startsCollapsed) {
+                player.hidden = true;
+                launcher.hidden = false;
+            }
             loadTrack(index);
         })();
     </script>

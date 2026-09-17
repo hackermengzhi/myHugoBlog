@@ -14,12 +14,12 @@ SortBy              = "default"
     customText = ""
 
 [dateFormat]
-    published   = ":date_full"
-    lastUpdated = ":date_full"
+    published   = "2006年1月2日"
+    lastUpdated = "2006年1月2日"
 
 [sidebar]
     emoji    = "✨"
-    subtitle = "记录学习、生活与灵感。"
+    subtitle = "学习、创造，也认真生活。"
     avatar   = "img/avatar.jpg"
 
 [musicPlayer]

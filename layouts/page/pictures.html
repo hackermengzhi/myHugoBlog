@@ -47,10 +47,19 @@
 
     <dialog class="picture-lightbox" data-picture-lightbox aria-label="图片预览">
         <button class="picture-lightbox__close" type="button" data-lightbox-close aria-label="关闭图片预览">×</button>
+        <button class="picture-lightbox__nav picture-lightbox__nav--previous" type="button" data-lightbox-previous aria-label="上一张图片">
+            {{ partial "helper/icon" "chevron-left" }}
+        </button>
         <figure>
             <img src="" alt="">
-            <figcaption></figcaption>
+            <figcaption>
+                <span data-lightbox-caption></span>
+                <small data-lightbox-count></small>
+            </figcaption>
         </figure>
+        <button class="picture-lightbox__nav picture-lightbox__nav--next" type="button" data-lightbox-next aria-label="下一张图片">
+            {{ partial "helper/icon" "chevron-right" }}
+        </button>
     </dialog>
 
     <script>
@@ -59,24 +68,45 @@
             const lightbox = document.querySelector('[data-picture-lightbox]');
             if (!gallery || !lightbox) return;
 
+            const buttons = [...gallery.querySelectorAll('.photo-tile button')];
             const image = lightbox.querySelector('img');
-            const caption = lightbox.querySelector('figcaption');
+            const caption = lightbox.querySelector('[data-lightbox-caption]');
+            const count = lightbox.querySelector('[data-lightbox-count]');
+            let activeIndex = 0;
+            let opener = null;
 
-            gallery.addEventListener('click', (event) => {
-                const button = event.target.closest('.photo-tile button');
-                if (!button) return;
+            const showImage = (nextIndex) => {
+                activeIndex = (nextIndex + buttons.length) % buttons.length;
+                const button = buttons[activeIndex];
                 image.src = button.dataset.full;
                 image.alt = button.querySelector('img').alt;
                 caption.textContent = button.dataset.caption;
                 caption.hidden = !button.dataset.caption;
+                count.textContent = `${activeIndex + 1} / ${buttons.length}`;
+            };
+
+            gallery.addEventListener('click', (event) => {
+                const button = event.target.closest('.photo-tile button');
+                if (!button) return;
+                opener = button;
+                showImage(buttons.indexOf(button));
                 lightbox.showModal();
             });
 
+            lightbox.querySelector('[data-lightbox-previous]').addEventListener('click', () => showImage(activeIndex - 1));
+            lightbox.querySelector('[data-lightbox-next]').addEventListener('click', () => showImage(activeIndex + 1));
             lightbox.querySelector('[data-lightbox-close]').addEventListener('click', () => lightbox.close());
             lightbox.addEventListener('click', (event) => {
                 if (event.target === lightbox) lightbox.close();
             });
-            lightbox.addEventListener('close', () => { image.src = ''; });
+            lightbox.addEventListener('keydown', (event) => {
+                if (event.key === 'ArrowLeft') showImage(activeIndex - 1);
+                if (event.key === 'ArrowRight') showImage(activeIndex + 1);
+            });
+            lightbox.addEventListener('close', () => {
+                image.src = '';
+                opener?.focus();
+            });
         })();
     </script>
 
