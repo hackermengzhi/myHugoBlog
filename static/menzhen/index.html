@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>门诊日志转换</title>
+  <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+  <style>
+    :root{--ink:#202124;--muted:#6b7280;--line:#d9dee7;--accent:#315f9b;--soft:#f4f7fb}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;background:linear-gradient(140deg,#f7fafc,#eef3f9);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif}
+    main{width:min(720px,calc(100% - 32px));margin:8vh auto}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:34px;box-shadow:0 18px 50px #2337501a}
+    h1{margin:0 0 10px;font-size:28px}.lead{margin:0 0 26px;color:var(--muted);line-height:1.7}.drop{display:block;border:1.5px dashed #9db1cc;border-radius:14px;background:var(--soft);padding:26px;text-align:center;cursor:pointer}.drop:hover{border-color:var(--accent);background:#edf4ff}
+    input{display:none}.file-name{margin-top:12px;color:var(--muted);font-size:14px;min-height:20px;overflow-wrap:anywhere}.actions{display:flex;gap:12px;align-items:center;margin-top:22px;flex-wrap:wrap}
+    button{border:0;border-radius:10px;padding:11px 18px;background:var(--accent);color:#fff;font-size:15px;cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}.status{margin:18px 0 0;min-height:24px;color:var(--muted);font-size:14px;line-height:1.6}.note{margin:26px 0 0;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;line-height:1.7}
+  </style>
+</head>
+<body><main><section class="card">
+  <h1>门诊日志转换</h1>
+  <p class="lead">选择单 Sheet 门诊日志，生成带中英文列的 Excel 结果。文件只在当前浏览器中处理，不会上传。</p>
+  <label class="drop" for="inputFile"><strong>点击选择 Excel 文件</strong><div class="file-name" id="fileName">支持 .XLS、.XLSX、.XLSM</div></label>
+  <input id="inputFile" type="file" accept=".xls,.xlsx,.xlsm">
+  <div class="actions"><button id="convert" type="button" disabled>转换并下载</button><span id="status" class="status" role="status"></span></div>
+  <p class="note">输出为单个“转换后数据” Sheet，包含 Gender、Age、Nationality、Classification of personnel、Waiting-tim 和 Type 等英文列。</p>
+</section></main>
+<script>
+const input=document.querySelector('#inputFile'),convert=document.querySelector('#convert'),fileName=document.querySelector('#fileName'),status=document.querySelector('#status');
+const gender={'男':'Male','女':'Female'},personnel={'学生':'Student','教职工':'Staff','第三方':'Vendor','家属':'Family member'},nationality={'中国':'Chinese','International':'International','HMT':'HMT'},patientType={'大学生医保':'Student medical insurance','自费MSH':'MSH','自费':'Self-payment','职工医保':'Staff medical insurance','自费外籍患者':'International student (Student Accident Insurance)'};
+const clean=v=>String(v??'').replaceAll('\n','').trim(),strip=(v,s)=>clean(v).endsWith(s)?clean(v).slice(0,-s.length):clean(v);
+const headers=['病人姓名','性别','Gender','年龄','Age','人员属性','Classification of personnel','就诊时间','','国籍','Nationality','医生诊断','','','诊断分类','','','疾病类型','','接诊医生','挂号护士','接诊时间','候诊时间','Waiting-tim','就诊费用','病人性质','Type','',''];
+input.addEventListener('change',()=>{const f=input.files[0];fileName.textContent=f?f.name:'支持 .XLS、.XLSX、.XLSM';convert.disabled=!f;status.textContent=''});
+function targetRow(row,target){if(target)return row.slice(0,29).concat(Array(29).fill('')).slice(0,29);const r=row.concat(Array(21).fill(''));if(clean(r[0])==='门诊人数：')return[r[0],r[1],...Array(27).fill('')];return[r[0],r[1],gender[clean(r[1])]||'',r[2],strip(r[2],'岁'),r[3],personnel[clean(r[3])]||'',r[4],'',r[6],nationality[clean(r[6])]||clean(r[6]),r[7],'','',r[10],'','',r[13],'',r[15],r[16],r[17],r[18],strip(r[18],'秒'),r[19],r[20],patientType[clean(r[20])]||'','','']}
+const border={top:{style:'thin',color:{rgb:'000000'}},bottom:{style:'thin',color:{rgb:'000000'}},left:{style:'thin',color:{rgb:'000000'}},right:{style:'thin',color:{rgb:'000000'}}},base={font:{name:'宋体',sz:10,color:{rgb:'000000'}},alignment:{vertical:'top',horizontal:'left',wrapText:true},border},center={...base,alignment:{vertical:'top',horizontal:'center',wrapText:true}},widths=[14,8,11,8,8,12,24,18,4,12,16,20,4,4,24,4,4,30,4,12,12,18,12,12,10,16,38,4,4];
+function styleSheet(ws,start,end){ws['!cols']=widths.map(wch=>({wch}));for(let c=0;c<29;c++){const cell=ws[XLSX.utils.encode_cell({r:6,c})]||(ws[XLSX.utils.encode_cell({r:6,c})]={v:headers[c]});cell.s={...center}}for(let r=start;r<=end;r++)for(let c=0;c<29;c++){const cell=ws[XLSX.utils.encode_cell({r,c})]||(ws[XLSX.utils.encode_cell({r,c})]={v:''});cell.s=(c===1||c===2||c===4||c===6||c===9||c===10||c===14||c===16||c===23||c===25||c===26)?center:base;if(c===4||c===23)cell.z='0';if(c===24)cell.z='0.00'}ws['!freeze']={xSplit:0,ySplit:7}}
+convert.addEventListener('click',async()=>{const file=input.files[0];if(!file)return;try{convert.disabled=true;status.textContent='正在读取并转换…';const book=XLSX.read(await file.arrayBuffer(),{type:'array',cellDates:true}),sheet=book.Sheets[book.SheetNames[0]],rows=XLSX.utils.sheet_to_json(sheet,{header:1,raw:true,defval:''}),header=rows.findIndex(row=>row.some(v=>clean(v).includes('病人姓名')));if(header<0)throw Error('找不到包含“病人姓名”的表头。');const marker=new Set(rows[header].map(clean)),already=['Gender','Age','Classification of personnel','Nationality','Waiting-tim','Type'].filter(x=>marker.has(x)).length>=4,title=rows.slice(0,Math.min(header,6)).map(r=>r.slice(0,29).concat(Array(29).fill('')).slice(0,29));while(title.length<6)title.push(Array(29).fill(''));const records=rows.slice(header+1).filter(r=>r.some(v=>clean(v)!=='')).map(r=>targetRow(r,already)),ws=XLSX.utils.aoa_to_sheet([...title,headers,...records]);styleSheet(ws,7,6+records.length);const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'转换后数据');const name=file.name.replace(/\.(xlsm?|xlsx)$/i,'')+'_结果.xlsx';XLSX.writeFile(wb,name,{bookType:'xlsx',cellStyles:true});status.textContent=`已生成 ${name}，共 ${records.length} 条记录。`}catch(e){status.textContent=`转换失败：${e.message}`}finally{convert.disabled=false}});
+</script></body></html>

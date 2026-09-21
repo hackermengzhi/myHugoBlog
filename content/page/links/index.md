@@ -3,6 +3,9 @@ title: 链接 | Links
 slug: links
 description: 常用主页与值得反复访问的站点。
 links:
+  - title: 门诊日志转换
+    description: 在浏览器本地把单 Sheet 门诊日志转换为中英文格式。
+    website: /myHugoBlog/menzhen/
   - title: Mengzhi on GitHub
     description: 代码、项目与持续更新的学习实践。
     website: https://github.com/hackermengzhi
