@@ -105,21 +105,24 @@ body {
 }
 
 /* Homepage -------------------------------------------------------------- */
+/* The theme's sidebars make the main column's width jump between breakpoints,
+   so the hero lays itself out by its own width instead of the viewport's. */
 .home-hero {
-    display: grid;
-    min-height: 500px;
+    display: flex;
+    flex-wrap: wrap;
     overflow: hidden;
     border: 1px solid rgba(29, 36, 50, 0.08);
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.96);
     box-shadow: var(--custom-card-shadow);
-    grid-template-columns: minmax(0, 1.12fr) minmax(300px, 0.88fr);
+    container-type: inline-size;
 }
 
 .home-hero__content {
     display: flex;
+    flex: 1 1 100%;
     align-self: center;
-    padding: 5.6rem;
+    padding: 3.2rem 2.3rem;
     flex-direction: column;
 }
 
@@ -146,7 +149,7 @@ body {
     max-width: 18ch;
     margin: 0;
     color: var(--card-text-color-main);
-    font-size: 5.6rem;
+    font-size: 3.8rem;
     line-height: 1.08;
     letter-spacing: 0;
 }
@@ -233,6 +236,7 @@ body {
 
 .home-hero__visual {
     position: relative;
+    flex: 1 1 100%;
     min-width: 0;
     margin: 0;
     overflow: hidden;
@@ -242,7 +246,8 @@ body {
     display: block;
     width: 100%;
     height: 100%;
-    min-height: 500px;
+    min-height: 260px;
+    max-height: 320px;
     object-fit: cover;
 }
 
@@ -256,6 +261,46 @@ body {
     color: #fff;
     font-size: 1.2rem;
     backdrop-filter: blur(8px);
+}
+
+@container (min-width: 480px) {
+    .home-hero__content {
+        padding: 4rem;
+    }
+
+    .home-hero h1 {
+        font-size: 4.8rem;
+    }
+}
+
+/* Side by side only when the text column keeps ~280px for the heading. */
+@container (min-width: 640px) {
+    .home-hero__content {
+        flex: 1.12 1 0;
+    }
+
+    .home-hero__visual {
+        flex: 0.88 1 0;
+    }
+
+    .home-hero__visual img {
+        min-height: 500px;
+        max-height: none;
+    }
+
+    .home-hero h1 {
+        font-size: 4.4rem;
+    }
+}
+
+@container (min-width: 740px) {
+    .home-hero__content {
+        padding: 4.8rem;
+    }
+
+    .home-hero h1 {
+        font-size: 5.6rem;
+    }
 }
 
 .home-section-heading {
@@ -279,16 +324,30 @@ body {
     font-size: 1.2rem;
 }
 
+.home-links {
+    container-type: inline-size;
+}
+
 .home-link-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 16px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+}
+
+@container (min-width: 560px) {
+    .home-link-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    .home-link-card {
+        min-height: 142px;
+    }
 }
 
 .home-link-card {
     position: relative;
     display: block;
-    min-height: 142px;
     overflow: hidden;
     padding: 2.2rem;
     border: 1px solid rgba(255, 255, 255, 0.64);
@@ -1154,18 +1213,6 @@ body {
         gap: 28px;
     }
 
-    .home-hero {
-        grid-template-columns: minmax(0, 1.15fr) minmax(200px, 0.85fr);
-    }
-
-    .home-hero__content {
-        padding: 4rem;
-    }
-
-    .home-hero h1 {
-        font-size: 4.8rem;
-    }
-
     .photo-masonry {
         column-count: 2;
     }
@@ -1182,32 +1229,7 @@ body {
     }
 
     .home-hero {
-        grid-template-columns: 1fr;
-        min-height: 0;
         border-radius: 10px;
-    }
-
-    .home-hero__content {
-        padding: 3.2rem 2.3rem;
-    }
-
-    .home-hero h1 {
-        font-size: 3.8rem;
-    }
-
-    .home-hero__visual,
-    .home-hero__visual img {
-        min-height: 260px;
-        max-height: 320px;
-    }
-
-    .home-link-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-    }
-
-    .home-link-card {
-        min-height: 0;
     }
 
     .home-section-heading {
